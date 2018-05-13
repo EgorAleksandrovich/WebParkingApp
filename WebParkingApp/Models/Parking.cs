@@ -158,6 +158,16 @@ namespace WebParkingApp
             return _cars.Any(car => car.Id == id);
         }
 
+        public int GetFreePlaces()
+        {
+            return _parkingSpace - _cars.Count;
+        }
+
+        public int GetBusyPlaces()
+        {
+            return _cars.Count;
+        }
+
         public Car GetCar(string id)
         {
             return _cars.FirstOrDefault(c => c.Id == id);
