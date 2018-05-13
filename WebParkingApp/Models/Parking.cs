@@ -58,6 +58,11 @@ namespace WebParkingApp
             return Balance;
         }
 
+        public List<Car> GetCars()
+        {
+            return _cars;
+        }
+
         public int GetBalanceInTheLastMinute()
         {
             int sum = _transactions.Sum(tr => tr.WriteOffs);
@@ -71,10 +76,18 @@ namespace WebParkingApp
 
         public void ParkTheCar(Car car)
         {
-            if (!(car == null) && _cars.Count() <= _parkingSpace)
+            if (car != null && _cars.Count() <= _parkingSpace)
             {
+                car.Id = GenerateId();
                 _cars.Add(car);
             }
+        }
+
+        private string GenerateId()
+        {
+            string id = string.Empty;
+            id += Guid.NewGuid().ToString().GetHashCode().ToString("x");
+            return id;
         }
 
         public void PickUpTheCar(Car outgoingCar)
