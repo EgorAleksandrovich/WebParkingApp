@@ -26,5 +26,10 @@ namespace WebParkingApp.Server
         {
             return _parking.GetCar(id);
         }
+
+        public void RemoveCar(Car outgoingCar)
+        {
+            _parking.PickUpTheCar(outgoingCar);
+        }
     }
 }
