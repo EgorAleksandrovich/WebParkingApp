@@ -23,12 +23,7 @@ namespace WebParkingApp.Controllers
         [HttpGet("{id}")]
         public Car GetCar(string id)
         {
-            Car car = _server.GetCar(id);
-            if (car == null)
-            {
-                throw new ArgumentNullException();
-            }
-            return car;
+            return _server.GetCar(id);
         }
 
         [HttpPost]
@@ -36,13 +31,13 @@ namespace WebParkingApp.Controllers
         {
             if (car.CarType == CarType.Undefined)
             {
-                throw new ArgumentException("Was not chosen \"car type\", please fill out all required fields!!");
+                throw new ArgumentNullException("Was not chosen \"car type\", please fill out all required fields!");
             }
             else
             {
                 if (car.Balance < 1)
                 {
-                    throw new ArgumentException("Was not entered required field \"car type\"!");
+                    throw new ArgumentException("Was not entered or entered wrong required field value \"car balance\"! Must be an integer value and greater than 0!");
                 }
             }
             _server.ParkTheCar(car);
@@ -51,25 +46,7 @@ namespace WebParkingApp.Controllers
         [HttpDelete("{id}")]
         public void Delete(string id)
         {
-            Car outgoingCar = _server.GetCar(id);
-            if (outgoingCar == null)
-            {
-                throw new ArgumentNullException(string.Format("Car with id \"{0}\" not found," +
-                    " please check the correctness of the input id.", id));
-            }
-            else
-            {
-                if (outgoingCar.Balance < 1)
-                {
-                    int requiredAmount = outgoingCar.Balance * -1;
-                    throw new ArgumentException(string.Format("In your account {0}, "+
-                        "to pick up the car replenish the account not less than {1}", outgoingCar.Balance, requiredAmount));
-                }
-                else
-                {
-                    _server.RemoveCar(outgoingCar);
-                }
-            }
+            _server.RemoveCar(id);
         }
     }
 }

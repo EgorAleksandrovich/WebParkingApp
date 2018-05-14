@@ -9,50 +9,41 @@ using WebParkingApp.Server;
 namespace WebParkingApp.Controllers
 {
     [Produces("application/json")]
+    [Route("api/Transactions")]
+
     public class TransactionsController : Controller
     {
         Server.Server _server = new Server.Server();
 
-        [HttpGet]
-        [Route("api/Transaction/all")]
+        [HttpGet("all")]
         public string[] GetAllTransaction()
         {
-            string[] transactions = _server.GetAllTransaction();
-            if (transactions.Count() == 0)
-            {
-                throw new ArgumentNullException(string.Format("There are no transaction yet!"));
-            }
-            return transactions;
+            return _server.GetAllTransaction();
         }
 
-        [HttpGet]
-        [Route("api/Transaction/lastMinute")]
+        [HttpGet("lastMinute")]
         public IEnumerable<Transaction> GetTransactionInTheLastMinute()
         {
-            IEnumerable<Transaction> transactionInTheLastMinute = _server.GetTransactionInTheLastMinute();
-            if (transactionInTheLastMinute.Count() == 0)
-            {
-                throw new ArgumentNullException("There are no transaction yet!");
-            }
-            return transactionInTheLastMinute;
+            return _server.GetTransactionInTheLastMinute();
         }
 
-        [HttpGet]
-        [Route("api/Transaction/{id}")]
+        [HttpGet("{id}")]
         public IEnumerable<Transaction> GetCarTransaction(string id)
         {
-            IEnumerable<Transaction> transactions = _server.GetTransactionInTheLastMinute();
-            if (transactions.Count() == 0)
-            {
-                throw new ArgumentNullException("There are no transaction yet!");
-            }
+            return _server.GetCarTransaction(id);
+        }
 
-            IEnumerable<Transaction> carTransactions = _server.GetCarTransaction(id);
-            if (carTransactions.Count() == 0)
+        [HttpPut("{carId}/{amount}")]
+        public void ReplenishCarBalance(string carId, int amount)
+        {
+            if (amount <= 0)
             {
-                throw new ArgumentNullException(string.Format("Car with id \"{0}\" not found!", id));
+                throw new ArgumentException("Error! Invalid input. Entered value must be an integer value and greater than 0!");
             }
-            return carTransactions;
+            else
+            {
+                _server.ReplenishCarBalance(carId, amount);
+            }
         }
     }
 }

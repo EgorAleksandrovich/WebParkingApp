@@ -9,26 +9,24 @@ using WebParkingApp.Server;
 namespace WebParkingApp.Controllers
 {
     [Produces("application/json")]
+    [Route("api/Parking")]
     public class ParkingController : Controller
     {
         Server.Server _server = new Server.Server();
 
-        [HttpGet]
-        [Route("api/Parking/freePlace")]
+        [HttpGet("freePlace")]
         public int GetFreePlaces()
         {
             return _server.GetFreePlaces();
         }
 
-        [HttpGet]
-        [Route("api/Parking/busyPlace")]
+        [HttpGet("busyPlace")]
         public int GetBusyPlaces()
         {
             return _server.GetBusyPlaces();
         }
 
-        [HttpGet]
-        [Route("api/Parking/totalBalance")]
+        [HttpGet("Balance")]
         public int GetTotalBalance()
         {
             return _server.GetTotalBalance();
